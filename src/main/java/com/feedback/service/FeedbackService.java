@@ -26,7 +26,7 @@ public class FeedbackService {
 
         System.out.println("👉 Calling Excel exporter...");
 
-        ExcelExporter.export(allFeedback);
+       // ExcelExporter.export(allFeedback);
 
         System.out.println("👉 Excel export finished");
 
