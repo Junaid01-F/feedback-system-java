@@ -37,4 +37,4 @@ Frontend → REST API → Spring Boot Backend → MySQL Database
 
 ## Author
 
-Junaid Pasha
+Junaid Pasha F.
