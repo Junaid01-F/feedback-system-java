@@ -13,7 +13,7 @@ form.addEventListener('submit', async (e) => {
 
     try {
 
-const response = await fetch('https://feedback-system-java-2.onrender.com/api/feedback', {
+const response = await fetch('http://localhost:8080/api/feedback', {
             method: 'POST',
 
             headers: {

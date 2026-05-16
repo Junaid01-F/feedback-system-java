@@ -11,45 +11,35 @@ public class ExcelExporter {
 
     public static void export(List<Feedback> list) {
 
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Feedback Data");
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Feedback Data");
 
-        // Create Header Row
-        Row header = sheet.createRow(0);
+            Row header = sheet.createRow(0);
+            header.createCell(0).setCellValue("ID");
+            header.createCell(1).setCellValue("Name");
+            header.createCell(2).setCellValue("Email");
+            header.createCell(3).setCellValue("Rating");
+            header.createCell(4).setCellValue("Comments");
 
-        header.createCell(0).setCellValue("ID");
-        header.createCell(1).setCellValue("Name");
-        header.createCell(2).setCellValue("Email");
-        header.createCell(3).setCellValue("Rating");
-        header.createCell(4).setCellValue("Comments");
+            int rowNum = 1;
+            for (Feedback f : list) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(f.getId() != null ? f.getId() : 0);
+                row.createCell(1).setCellValue(f.getName() != null ? f.getName() : "");
+                row.createCell(2).setCellValue(f.getEmail() != null ? f.getEmail() : "");
+                row.createCell(3).setCellValue(f.getRating() != null ? f.getRating() : 0);
+                row.createCell(4).setCellValue(f.getComments() != null ? f.getComments() : "");
+            }
 
-        int rowNum = 1;
+            for (int i = 0; i < 5; i++) {
+                sheet.autoSizeColumn(i);
+            }
 
-        // Fill Data Rows
-        for (Feedback f : list) {
-            Row row = sheet.createRow(rowNum++);
-
-            row.createCell(0).setCellValue(f.getId() != null ? f.getId() : 0);
-            row.createCell(1).setCellValue(f.getName() != null ? f.getName() : "");
-            row.createCell(2).setCellValue(f.getEmail() != null ? f.getEmail() : "");
-            row.createCell(3).setCellValue(f.getRating() != null ? f.getRating() : 0);
-            row.createCell(4).setCellValue(f.getComments() != null ? f.getComments() : "");
-        }
-
-        // Auto-size columns (important for Excel readability)
-        for (int i = 0; i < 5; i++) {
-            sheet.autoSizeColumn(i);
-        }
-
-        // Save file safely
-        String filePath = System.getProperty("user.home") + "/Desktop/feedback.xlsx";
-
-        try (FileOutputStream out = new FileOutputStream(filePath)) {
-
-            workbook.write(out);
-            workbook.close();
-
-            System.out.println("Excel file created successfully at: " + filePath);
+            String filePath = System.getProperty("user.home") + "/Desktop/feedback.xlsx";
+            try (FileOutputStream out = new FileOutputStream(filePath)) {
+                workbook.write(out);
+                System.out.println("Excel file created successfully at: " + filePath);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
